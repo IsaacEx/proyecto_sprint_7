@@ -15,6 +15,6 @@ df = pd.read_csv('vehicles_us.csv')
 df_final = clean_csv(df)
 
 # Creando Aplicación:
-st.header("Clase 3 del sprint 7 / Prueba streamlit")
+st.header("Clase 3 del sprint 7 / Prueba")
 st.date_input("Selecciona una fecha para el análisis")
 st.dataframe(df)

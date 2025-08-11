@@ -30,42 +30,50 @@ df.drop_duplicates(inplace=True)
 
 st.set_page_config(layout="wide")
 st.header("ANÁLISIS: ANUNCIOS DE VENTA DE COCHES 🚗")
-st.write("A través de esta página se puede la información de un conjunto de datos sobre anuncios de vehículos a lo largo de los años.")
+st.write(
+    "A través de esta página se puede la información de un conjunto de datos sobre anuncios de vehículos a lo largo de los años."
+)
 st.subheader("Explora los datos de forma interactiva")
 st.write("Usa las casillas y filtros para generar gráficos y analizar los datos.")
 
 # Mostrar resumen básico de los datos
 st.write(f"**Total de vehículos disponibles:** {len(df)}")
-st.write(f"**Años de modelo disponibles:** desde {int(df['model_year'].min())} hasta {int(df['model_year'].max())}")
+st.write(
+    f"**Años de modelo disponibles:** desde {int(df['model_year'].min())} hasta {int(df['model_year'].max())}"
+)
 st.write(f"**Precio promedio:** ${df['price'].mean():,.2f}")
 
 # Filtros interactivos para mejorar el análisis
 
 # Usamos columnas para organizar los filtros y que no se vea todo apilado
-col1, col2 = st.columns(2)
 
-with col1:
-    # Filtro para el rango de años del modelo
-    year_min, year_max = int(df['model_year'].min()), int(df['model_year'].max())
-    selected_year_range = st.slider(
-        "Selecciona rango de años del modelo",
-        min_value=year_min, max_value=year_max,
-        value=(year_min, year_max)
-    )
+with st.expander("Filtros de Datos", expanded=True):
+    col1, col2 = st.columns(2)
+    with col1:
+        year_min, year_max = int(df["model_year"].min()), int(df["model_year"].max())
+        selected_year_range = st.slider(
+            "Selecciona rango de años del modelo",
+            min_value=year_min,
+            max_value=year_max,
+            value=(year_min, year_max),
+        )
 
 with col2:
     # Filtro para el rango de precios
-    price_min, price_max = int(df['price'].min()), int(df['price'].max())
+    price_min, price_max = int(df["price"].min()), int(df["price"].max())
     selected_price_range = st.slider(
         "Selecciona rango de precios",
-        min_value=price_min, max_value=price_max,
-        value=(price_min, price_max)
+        min_value=price_min,
+        max_value=price_max,
+        value=(price_min, price_max),
     )
 
 # Aplicar filtros al DataFrame
 df_filtered = df[
-    (df['model_year'] >= selected_year_range[0]) & (df['model_year'] <= selected_year_range[1]) &
-    (df['price'] >= selected_price_range[0]) & (df['price'] <= selected_price_range[1])
+    (df["model_year"] >= selected_year_range[0])
+    & (df["model_year"] <= selected_year_range[1])
+    & (df["price"] >= selected_price_range[0])
+    & (df["price"] <= selected_price_range[1])
 ]
 ##
 # Checkbox y código para construir el histograma
@@ -77,10 +85,11 @@ if build_histogram:
         df_filtered,
         x="odometer",
         title="Distribución del Odómetro",
-        labels={"odometer": "Kilometraje (odómetro)", "count": "Cantidad de vehículos"},
         nbins=50,
         template="plotly_white",
     )
+    fig_hist.update_xaxes(title_text="Kilometraje", title_font=dict(size=15))
+    fig_hist.update_yaxes(title_text="Cantidad de Vehículos", title_font=dict(size=14))
     st.plotly_chart(fig_hist, use_container_width=True)
 
 # Checkbox y código para construir el gráfico de dispersión
@@ -93,14 +102,18 @@ if build_scatter:
         x="model_year",
         y="price",
         title="Precio vs. Año del Modelo",
-        color = "condition",
-        opacity = 0.6,
+        color="condition",
+        facet_col="condition",
+        facet_col_wrap=2,
         labels={"model_year": "Año del Modelo", "price": "Precio ($)"},
-        template="plotly_white"
+        height=850,
+        template="plotly_white",
+    )
+    fig_scatter.update_xaxes(matches=None, showticklabels=True)
+    fig_scatter.for_each_annotation(lambda a: a.update(text=""))
+    fig_scatter.update_layout(
+        legend=dict(
+            font=dict(size=17), x=1, title=dict(text="Condición", font=dict(size=17))
+        )
     )
     st.plotly_chart(fig_scatter, use_container_width=True)
-
-
-# st.dataframe(df)
-# streamlit run app.py
-# import datetime

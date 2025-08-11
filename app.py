@@ -31,7 +31,7 @@ df.drop_duplicates(inplace=True)
 st.set_page_config(layout="wide")
 st.header("ANÁLISIS: ANUNCIOS DE VENTA DE COCHES 🚗")
 st.write(
-    "A través de esta página se puede la información de un conjunto de datos sobre anuncios de vehículos a lo largo de los años."
+    "A través de esta página se puede analizar la información de un conjunto de datos sobre anuncios de vehículos a lo largo de los años."
 )
 st.subheader("Explora los datos de forma interactiva")
 st.write("Usa las casillas y filtros para generar gráficos y analizar los datos.")
@@ -52,7 +52,7 @@ with st.expander("Filtros de Datos", expanded=True):
     with col1:
         year_min, year_max = int(df["model_year"].min()), int(df["model_year"].max())
         selected_year_range = st.slider(
-            "Selecciona rango de años del modelo",
+            "Selecciona rango de años de modelos",
             min_value=year_min,
             max_value=year_max,
             value=(year_min, year_max),
@@ -93,15 +93,15 @@ if build_histogram:
     st.plotly_chart(fig_hist, use_container_width=True)
 
 # Checkbox y código para construir el gráfico de dispersión
-build_scatter = st.checkbox("Construir un gráfico de dispersión de precio vs. año")
+build_scatter = st.checkbox("Construir un gráfico de dispersión de precios vs. años")
 
 if build_scatter:
-    st.write("Gráfico de dispersión para ver la relación entre precio y año del modelo")
+    st.write("Gráfico de dispersión para ver la relación entre precios y años de modelos")
     fig_scatter = px.scatter(
         df_filtered,
         x="model_year",
         y="price",
-        title="Precio vs. Año del Modelo",
+        title="Precios vs. Años de Modelos",
         color="condition",
         facet_col="condition",
         facet_col_wrap=2,

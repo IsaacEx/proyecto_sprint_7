@@ -23,4 +23,4 @@ Este proyecto fue desarrollado como parte del bootcamp de análisis de datos de 
 * **Streamlit:** para la construcción de la aplicación web.
 * **Render:** para el despliegue de la aplicación.
 
-Enlace para probar el proeycto: https://proyecto-sprint-7-yv1b.onrender.com
+Enlace para probar el proyecto: https://proyecto-sprint-7-yv1b.onrender.com
